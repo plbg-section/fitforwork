@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AppModule">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PLBG FIT FOR WORK</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/xy.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.js" > </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-messages.min.js"></script>
+    <script>
+      var AppModule = angular.module("AppModule", ['angular.filter']); // ['angular.filter']
+      AppModule.controller("ctrl_fitforwork", function ($scope, $http) {
+
+        $http
+          .get(
+            "https://script.google.com/macros/s/AKfycbyUwEs5o3C58i7HTTbnUjCmQVS4OJ2Tv2MX0SlCemoFafdKounRp9Hp1_OorPPdD2_-3Q/exec"
+          )
+          .then(
+            function successCallback(res) {
+              //$scope.oee = res.data.oee;
+              console.log("data fitforworks =");
+              console.log(res.data.summary);
+              $scope.fitforworks=res.data.summary;
+              console.log("LastUpdate =",$scope.fitforworks[$scope.fitforworks.length-1].LastUpdate);
+              $scope.LastUpdate=$scope.fitforworks[$scope.fitforworks.length-1].LastUpdate;
+              $scope.NameLastUpdate=$scope.fitforworks[$scope.fitforworks.length-1].Name;
+            },
+            function errorCallback(res) {
+              // alert("net ตายนะมึง")
+              console.log(" Unable to perform get request");
+            }
+          );
+
+        
+        ////////////////////////////////////////////////////
+        $scope.getsumtotal = function (obj) {
+          return obj
+            .map(function (x) {
+              return x.TimeTotal;
+            })
+            .reduce(function (a, b) {
+              return a + b;
+            });
+        };
+
+       
+      });
+
+        
+    </script>
+  </head>
+  <body ng-controller="ctrl_fitforwork">
+
+    <hr>
+    <h2 class='mb-3 '>ตาราง Fit For Work PLBG</h2>
+    <h5 class='mb-3 '>Last Update {{NameLastUpdate}} {{ LastUpdate |  date: 'dd/MM/yyyy HH:MM'}}</h2>
+    <div  style="padding-top: 1%">
+        <table  class="table table-striped table-bordered" style="width:100%">
+            <thead>
+              <tr >
+                <th class="th-sm" class="pointer"
+                data-ng-click="sortType = name; sortReverse = !sortReverse;">ชื่อ
+                </th>
+                <th class="th-sm" class="pointer"
+                data-ng-click="sortType = name; sortReverse = !sortReverse;">ชั่วโมงสะสม/เป้าหมาย(80 ชม.)
+                </th>
+                <th class="th-sm" class="pointer"
+                data-ng-click="sortType = name; sortReverse = !sortReverse;">ความคืบหน้า
+                </th>
+               
+              </tr>
+            </thead>
+            <tbody>
+                <tr> <th > <input
+                    ng-model="s.Name"
+                    placeholder="ค้นตามชื่อ"
+                    class="form-control input-md"
+                  /></th>
+               
+                    <th > </th>
+                    <th > </th>
+                  </tr>
+
+
+          
+              <tr ng-repeat="(key, items) in fitforworks | filter:s | orderBy:sortType:sortReverse | groupBy: 'ID' ">
+                <td> {{items[0].Name}}</td>
+                <td>{{getsumtotal(items)| number:2 }} / 80</td>
+                <td>{{ (getsumtotal(items)*100) / 80 | number:2}} %</td>
+               
+              </tr>
+          
+            </tbody>
+
+          </table>
+        
+    </div>
+
+
+
+  </body>
+</html>
+
+
