@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PLBG FIT FOR WORK</title>
+    <link rel="icon" href="data:,"><!-- fix favicon error-->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script> 
@@ -77,20 +78,25 @@
     <h5 class='mb-3 '>Last Update {{NameLastUpdate}} {{ LastUpdate |  date: 'dd/MM/yyyy HH:MM'}}</h2>
     <div  style="padding-top: 1%">
         <table  class="table table-striped table-bordered" style="width:100%">
-            <thead>
+           <thead>
               <tr >
                 <th>ลำดับ</th>
                 <th class="th-sm" class="pointer"
-                data-ng-click="sortType = Name; sortReverse = !sortReverse;">ชื่อ
-                <span ng-show="sortType == 'Name' && !sortReverse" class="fa fa-caret-down"><i class="fa fa-caret-down" style="font-size:36px"></i></span>
-                <span ng-show="sortType == 'Name' && sortReverse" class="fa fa-caret-up"><i class="fa fa-caret-up" style="font-size:36px"></i></span>
+                data-ng-click="sortType = Name; sortReverse = !sortReverse;">ชื่อ                
+                <span ng-show="sortReverse" ><i class="fa fa-sort-amount-asc" style="color:blue"></i></span>
+                <span ng-show="!sortReverse" ><i class="fa fa-sort-amount-desc" style="color:red"></i></span>
               </a>
                 </th>
                 <th class="th-sm" class="pointer"
                 data-ng-click="sortType = Name; sortReverse = !sortReverse;">ชั่วโมงสะสม/เป้าหมาย(80 ชม.)
+                <span ng-show="sortReverse" ><i class="fa fa-sort-amount-asc" style="color:blue"></i></span>
+                <span ng-show="!sortReverse" ><i class="fa fa-sort-amount-desc" style="color:red"></i></span>
                 </th>
                 <th class="th-sm" class="pointer"
                 data-ng-click="sortType = Name; sortReverse = !sortReverse;">ความคืบหน้า
+                <span ng-show="sortReverse" ><i class="fa fa-sort-amount-asc" style="color:blue"></i></span>
+                <span ng-show="!sortReverse" ><i class="fa fa-sort-amount-desc" style="color:red"></i></span>
+
                 </th>              
               </tr>
             </thead>
